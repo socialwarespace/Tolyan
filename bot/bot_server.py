@@ -1,5 +1,6 @@
-from chat import check_chat
-from pm import check_pm
+from bot.chat import check_chat
+from bot.pm import check_pm
+from bot.logger import add_post
 
 import random, unidecode, sys, time, string
 
@@ -14,26 +15,25 @@ def start():
         try:
             mess_receive()
         except Exception:
-            print("####Runtime error")
-            
+            add_post('Runtime error')
+
 
 
 def auth():
-    tkn = 'huy vam, friends'
+    tkn = '4eab11d21b3c5aa011736bdb56a42c2e11a3892cf8fbe2009fe134b5123aa198df3e5b33992409edf1277'
     session = vk.Session(access_token = tkn)
     global api
     api = vk.API(session)
-    print('Authorized successfully')
+    add_post('Authorized successfully')
 
 def mess_receive():
-    print('Log:')
 
     lastmessid = 0
     global messcnt
     global do_response
     do_response = True
     messcnt = 20
-    
+
     while True:
         try:
             response = api.messages.get(count = messcnt, time_offset = 10, last_message_id = lastmessid, out = 0)
@@ -42,23 +42,23 @@ def mess_receive():
                 if response[1]['uid'] == 187906747 and 'bot_t' in response[1]['body']:
                     if response[1]['body'] == 'bot_t -h':
                         hhh_msg = '''     [Admin commands]
-use 'bot_t %admin_command%' form to call admin commands\n  
+use 'bot_t %admin_command%' form to call admin commands\n
 -h: help\n-s: stop\n-p: pause\n-r: release\n-l: leave_chat if exists or raise KeyException'''
                         api.messages.send(chat_id = response[1]['chat_id'],message = hhh_msg)
                     elif response[1]['body'] == 'bot_t -s':
                         sys.exit(0)
                     elif response[1]['body'] == 'bot_t -p':
-                        print('#pause |\n       V')
+                        add_post('#pause |\n       V')
                         do_response = False
                     elif response[1]['body'] == 'bot_t -r':
-                        print('#release |\n         V')
+                        add_post('#release |\n         V')
                         do_response = True
                     elif response[1]['body'] == 'bot_t -l':
                         api.messages.removeChatUser(chat_id = response[1]['chat_id'],user_id = '371041508')
-                        
+
                 if response[1]:
                     lastmessid = response[1]['mid']
-                    
+
                     for item in range(1, len(response)):
                         try:
                             uid = str(response[item]['uid'])
@@ -69,24 +69,22 @@ use 'bot_t %admin_command%' form to call admin commands\n
                                 pass
                             if chatid == -1:
                                 if uid == '187906747':
-                                    print('> ' + response[item]['body'].translate(non_bmp_map) + ' ' + '(uid = id187906747)(admin)')
+                                    add_post('> ' + response[item]['body'].translate(non_bmp_map) + ' ' + '(uid = id187906747)(admin)')
                                 else:
-                                    print('> ' + response[item]['body'].translate(non_bmp_map) + ' ' + '(uid = ' + uid + ')')
+                                    add_post('> ' + response[item]['body'].translate(non_bmp_map) + ' ' + '(uid = ' + uid + ')')
                                 if do_response == True:
                                     check_pm(api,response[item])
                             else:
                                 if uid == '187906747':
-                                    print('> ' + response[item]['body'].translate(non_bmp_map) + ' ' +'(chat_id = ' + str(chatid)+ ', uid = id187906747)(admin)')
+                                    add_post('> ' + response[item]['body'].translate(non_bmp_map) + ' ' +'(chat_id = ' + str(chatid)+ ', uid = id187906747)(admin)')
                                 else:
-                                    print('> ' + response[item]['body'].translate(non_bmp_map) + ' ' +'(chat_id = '+str(chatid)+ ', uid = ' + uid + ')')
+                                    add_post('> ' + response[item]['body'].translate(non_bmp_map) + ' ' +'(chat_id = '+str(chatid)+ ', uid = ' + uid + ')')
                                 if do_response == True:
                                     check_chat(api,response[item])
                         except IndexError:
                             pass
                     api.messages.markAsRead(message_ids = response[item]['mid'])
-                    
+
         except vk.exceptions.VkAPIError:
             pass
         time.sleep(0.5)
-
-start()

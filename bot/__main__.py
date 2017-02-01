@@ -1,4 +1,3 @@
-from bot import start
+from bot.server import main
 
-start()
-
+main()

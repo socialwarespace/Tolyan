@@ -1,4 +1,4 @@
-from ListsPm import getCmds, getLolwhat, getFuckyou, getZhebit, getHelpText
+from bot.ListsPm import getCmds, getLolwhat, getFuckyou, getZhebit, getHelpText
 
 import random, unidecode, sys, time, string, math
 import vk
@@ -10,10 +10,10 @@ def check_pm(api,msg):
 
     cmds =  getCmds()
     lolwhat = getLolwhat()
-    fuckyou = getFuckyou()     
-    zhebit  = getZhebit()    
+    fuckyou = getFuckyou()
+    zhebit  = getZhebit()
     words = msg['body'].split()
-    
+
     if words[0].lower() in prefixes:
         if len(words) > 1 and words[1] in cmds:
         #start_commands
@@ -36,7 +36,7 @@ def check_pm(api,msg):
                 else:
                     api.messages.send(user_id = msg['uid'],message = u'я понимаю, что у тебя много дел, но вынужден сообщить, что я не могу искать видео по пустому запросу, а ты не можешь не соснуть мой длинный хуй, тупорылое ты животное, для кого здесь команда "помощь"?')
 
-            
+
             if words[1].lower() == 'zhebit':
                 print(u'#лол жебит')
                 if msg['uid'] == 274081163:
@@ -51,11 +51,11 @@ def check_pm(api,msg):
                     api.messages.send(user_id = msg['uid'],message = anek)
                 except IndexError:
                     pass
-    
+
             if words[1].lower() == u'юмореска':
                 try:
                     print(u'#юмореска')
-                    num = api.wall.get(owner_id = '-92876084',count = 1)[0]               
+                    num = api.wall.get(owner_id = '-92876084',count = 1)[0]
                     anek = api.wall.get(owner_id = '-92876084', count = 1, offset = random.randint(0,num - 1))[1]['text']
                     api.messages.send(user_id = msg['uid'],message = anek)
                 except IndexError:
@@ -72,7 +72,7 @@ def check_pm(api,msg):
                             att = 'photo-122615111_' + str(pic[1]['attachment']['photo']['pid'])
                             api.messages.send(user_id = msg['uid'],attachment = att)
                             Sent = True
-                
+
             if words[1][:3].lower() == u'мем':
                 print(u'#мем')
                 Sent = False
@@ -86,7 +86,7 @@ def check_pm(api,msg):
                         if 'photo' in meme[1]['attachment']:
                             att = 'photo' + meme_pub_id +'_' + str(meme[1]['attachment']['photo']['pid'])
                             api.messages.send(user_id = msg['uid'],attachment = att)
-                            Sent = True                        
+                            Sent = True
 
             if words[1].lower() == u'спиздани' or words[1].lower() == u'повтори' or words[1].lower() == u'скажи' or words[1].lower() == u'забазарь':
                 if len(words) > 2:
@@ -94,7 +94,7 @@ def check_pm(api,msg):
                     api.messages.send(user_id = msg['uid'],message = msg['body'][msg['body'].find(words[1]) + len(words[1]):])
                 else:
                     api.messages.send(user_id = msg['uid'],message = 'ты че, вообще что ли даунидзе?')
-                    
+
             if words[1].lower() == u'когда':
                 print(u'#когда')
                 if len(words) > 2:
@@ -152,7 +152,7 @@ def check_pm(api,msg):
                         api.messages.send(user_id = msg['uid'],message = u'ты че, вообще что ли даунидзе?')
                 except ValueError:
                     api.messages.send(user_id = msg['uid'],message = u'ты че, вообще что ли олень ебаный?')
-            
+
             if words[1].lower() == u'посчитай':
                 try:
                     a = msg['body'][msg['body'].find(u'посчитай',0,len(msg['body']))+9:]
@@ -161,7 +161,7 @@ def check_pm(api,msg):
                     a = a.replace('tg','math.tan')
                     a = a.replace('tan','math.tan')
                     a = a.replace('ctg','math.ctg')
-                    a = a.replace('cot','math.cot') 
+                    a = a.replace('cot','math.cot')
                     a = a.replace('log','math.log')
                     a = a.replace('sqrt','math.sqrt')
                     a = a.replace('pow','math.pow')
@@ -171,7 +171,7 @@ def check_pm(api,msg):
                     exec("api.messages.send(user_id = msg['uid'],message = "+ a + ')')
                 except Exception:
                     api.messages.send(user_id = msg['uid'],message = u'ты че, вообще что ли даунидзе?')
-            
+
             if words[1].lower() == u'хелп':
                 if len(words) > 2:
                     response = api.photos.get(owner_id = '371041508', album_id = '240867292', count = '10')
@@ -183,10 +183,10 @@ def check_pm(api,msg):
                             api.messages.send(user_id = msg['uid'],attachment = 'photo371041508_' + str(response[pic]['pid']))
                     if picFound == False:
                         print('#хелп-не найдено')
-                        api.messages.send(user_id = msg['uid'],message = u'вводи, блядь, нормально, чего ты хочешь, тупое животное')               
+                        api.messages.send(user_id = msg['uid'],message = u'вводи, блядь, нормально, чего ты хочешь, тупое животное')
                 else:
                     api.messages.send(user_id = msg['uid'],message = u'я просто опизденеваю от твоей непроходимой тупости, хуйлуша. иди нахуй. пожалуйста.')
-            
+
         #end_commands
         elif len(words) > 1:
             api.messages.send(user_id = msg['uid'],message = fuckyou[random.randint( 0,len(fuckyou)-1 )])

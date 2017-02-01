@@ -1,4 +1,4 @@
-from ListsChat import getCmds, getLolwhat, getFuckyou, getZhebit, getHelpText
+from bot.ListsChat import getCmds, getLolwhat, getFuckyou, getZhebit, getHelpText
 
 import random, unidecode, sys, time, string, math
 import vk
@@ -13,9 +13,9 @@ def check_chat(api,msg):
     fuckyou = getFuckyou()
     zhebit  = getZhebit()
     help_text = getHelpText()
-    
+
     words = msg['body'].split()
-    
+
     if words[0].lower() in prefixes:
         if len(words) > 1 and words[1] in cmds:
         #start_commands
@@ -23,12 +23,12 @@ def check_chat(api,msg):
             if words[1].lower() == u'ливни' and msg['uid'] == 187906747:
                 print(u'#ливни-админ')
                 api.messages.send(chat_id = msg['chat_id'],message = 'ok(')
-                api.messages.removeChatUser(chat_id = msg['chat_id'],user_id = '371041508')                                                      
+                api.messages.removeChatUser(chat_id = msg['chat_id'],user_id = '371041508')
                                         #user
             if words[1].lower() == u'помощь' or words[1].lower() == u'help':
                 help_text = getHelpText()
                 api.messages.send(chat_id = msg['chat_id'],message = help_text)
-            
+
             if words[1].lower() == u'съеби' or words[1].lower() == u'пиздуй' or words[1].lower() == u'уйди' or words[1].lower() == u'ливни' and msg['uid'] != 187906747:
                 print(u'#ливни')
                 api.messages.send(chat_id = msg['chat_id'],message = u'ладно, только отвали от меня')
@@ -49,10 +49,10 @@ def check_chat(api,msg):
                     api.messages.send(chat_id = msg['chat_id'],forward_messages = msg['mid'],attachment = att)
                 else:
                     api.messages.send(chat_id = msg['chat_id'],forward_messages = msg['mid'],message = u'я понимаю, что у тебя много дел, но вынужден сообщить, что я не могу искать видео по пустому запросу, а ты не можешь не соснуть мой длинный хуй, тупорылое ты животное, для кого здесь команда "помощь"?')
-            
+
             if words[1].lower() == u'расписание':
                 api.messages.send(chat_id = msg['chat_id'],forward_messages = msg['mid'],message = u'1. География подлости\n2. Орфография ненависти\n3. Апология невежества\n4. Мифология оптимизма\n5. Законы гаубицы благонравия\n6. Знатное пиршество благоразумия')
-            
+
             if words[1].lower() == u'админ':
                 print("#админ")
                 try:
@@ -63,12 +63,12 @@ def check_chat(api,msg):
                         api.messages.send(chat_id = msg['chat_id'],message = u'тебя это не касается, чмо')
                 except vk.exceptions.VkAPIError:
                     api.messages.send(chat_id = msg['chat_id'],message = u'это ж каким надо быть тупым говном, чтобы вызывать команду, которую невозможно выполнить. иди нахуй. просто иди нахуй')
-                    
+
             if words[1].lower() == 'zhebit':
                 print(u'#лол жебит')
                 chat_users = api.messages.getChat(chat_id = msg['chat_id'])['users']
                 print(chat_users)
-                if 274081163 in chat_users: 
+                if 274081163 in chat_users:
                     api.messages.send(chat_id = msg['chat_id'],message = u'это что вообще за команда, идиотина?', forward_messages = msg['mid'])
                 else:
                     api.messages.send(chat_id = msg['chat_id'],message = zhebit[random.randint( 0,len(zhebit)-1 )])
@@ -85,7 +85,7 @@ def check_chat(api,msg):
             if words[1].lower() == u'юмореска':
                 try:
                     print(u'#юмореска')
-                    num = api.wall.get(owner_id = '-92876084',count = 0)[0]               
+                    num = api.wall.get(owner_id = '-92876084',count = 0)[0]
                     anek = api.wall.get(owner_id = '-92876084', count = 1, offset = random.randint(0,num - 1))[1]['text']
                     api.messages.send(chat_id = msg['chat_id'],message = anek,forward_messages = msg['mid'])
                 except IndexError:
@@ -118,14 +118,14 @@ def check_chat(api,msg):
                             api.messages.send(chat_id = msg['chat_id'],attachment = att)
                             Sent = True
 
-            
+
             if words[1].lower() == u'спиздани' or words[1].lower() == u'повтори' or words[1].lower() == u'скажи' or words[1].lower() == u'забазарь':
                 if len(words) > 2:
                     print(u'#повтори')
                     api.messages.send(chat_id = msg['chat_id'],message = msg['body'][msg['body'].find(words[1]) + len(words[1]):])
                 else:
                     api.messages.send(chat_id = msg['chat_id'],message = 'ты че, вообще что ли даунидзе?')
-                    
+
             if words[1].lower() == u'когда':
                 print(u'#когда')
                 if len(words) > 2:
@@ -184,7 +184,7 @@ def check_chat(api,msg):
                                u', отвечаю',
                                u', но инфа старая (а говно у тебя во рту свежее)',
                                u' (нет)']
-                    
+
                     chat_users = api.messages.getChat(chat_id = msg['chat_id'],fields = 'first_name, last_name' )['users']
 
                     ans_id = random.randint(0,len(chat_users)-1)
@@ -214,10 +214,10 @@ def check_chat(api,msg):
                             api.messages.send(chat_id = msg['chat_id'],attachment = 'photo371041508_' + str(response[pic]['pid']))
                     if picFound == False:
                         print('#хелп-не найдено')
-                        api.messages.send(chat_id = msg['chat_id'],message = u'вводи, блядь, нормально, чего ты хочешь, тупое животное', forward_messages = msg['mid'])               
+                        api.messages.send(chat_id = msg['chat_id'],message = u'вводи, блядь, нормально, чего ты хочешь, тупое животное', forward_messages = msg['mid'])
                 else:
                     api.messages.send(chat_id = msg['chat_id'],message = u'я просто опизденеваю от твоей непроходимой тупости, хуйлуша. иди нахуй. пожалуйста.', forward_messages = msg['mid'])
-            
+
             if words[1].lower() == u'рандом':
                 print(u'#рандом')
                 try:
@@ -232,7 +232,7 @@ def check_chat(api,msg):
                         api.messages.send(chat_id = msg['chat_id'],message = u'ты че, вообще что ли даунидзе?', forward_messages = msg['mid'])
                 except ValueError:
                     api.messages.send(chat_id = msg['chat_id'],message = u'ты че, вообще что ли даунидзе?', forward_messages = msg['mid'])
-            
+
             if words[1].lower() == u'посчитай':
                try:
                     a = msg['body'][msg['body'].find(u'посчитай',0,len(msg['body']))+9:]
@@ -241,7 +241,7 @@ def check_chat(api,msg):
                     a = a.replace('tg','math.tan')
                     a = a.replace('tan','math.tan')
                     a = a.replace('ctg','math.ctg')
-                    a = a.replace('cot','math.cot') 
+                    a = a.replace('cot','math.cot')
                     a = a.replace('log','math.log')
                     a = a.replace('sqrt','math.sqrt')
                     a = a.replace('pow','math.pow')
