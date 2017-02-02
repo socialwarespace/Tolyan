@@ -11,14 +11,8 @@ non_bmp_map = dict.fromkeys(range(0x10000, sys.maxunicode + 1), 0xfffd)
 def start():
     auth()
     time.sleep(0.5)
-    while True:
-        try:
-            mess_receive()
-        except Exception:
-            add_post('Runtime error')
-
-
-
+    mess_receive()
+    
 def auth():
     tkn = 'lol'
     session = vk.Session(access_token = tkn)
@@ -87,4 +81,6 @@ use 'bot_t %admin_command%' form to call admin commands\n
 
         except vk.exceptions.VkAPIError:
             pass
+        except Exception:
+            add_post('Runtime error')
         time.sleep(0.5)
