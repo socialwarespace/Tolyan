@@ -20,7 +20,7 @@ def start():
 
 
 def auth():
-    tkn = '4eab11d21b3c5aa011736bdb56a42c2e11a3892cf8fbe2009fe134b5123aa198df3e5b33992409edf1277'
+    tkn = 'lol'
     session = vk.Session(access_token = tkn)
     global api
     api = vk.API(session)
