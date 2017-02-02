@@ -1,4 +1,5 @@
 from bot.ListsChat import getCmds, getLolwhat, getFuckyou, getZhebit, getHelpText
+from bot.logger import add_post
 
 import random, unidecode, sys, time, string, math
 import vk
@@ -21,7 +22,7 @@ def check_chat(api,msg):
         #start_commands
                                         #utility
             if words[1].lower() == u'ливни' and msg['uid'] == 187906747:
-                print(u'#ливни-админ')
+                add_post(u'#ливни-админ')
                 api.messages.send(chat_id = msg['chat_id'],message = 'ok(')
                 api.messages.removeChatUser(chat_id = msg['chat_id'],user_id = '371041508')
                                         #user
@@ -30,14 +31,14 @@ def check_chat(api,msg):
                 api.messages.send(chat_id = msg['chat_id'],message = help_text)
 
             if words[1].lower() == u'съеби' or words[1].lower() == u'пиздуй' or words[1].lower() == u'уйди' or words[1].lower() == u'ливни' and msg['uid'] != 187906747:
-                print(u'#ливни')
+                add_post(u'#ливни')
                 api.messages.send(chat_id = msg['chat_id'],message = u'ладно, только отвали от меня')
                 api.messages.removeChatUser(chat_id = msg['chat_id'],user_id = '371041508')
                 time.sleep(3)
                 api.messages.send(chat_id = msg['chat_id'],message = u'ха наебал')
 
             if words[1].lower() == u'видос':
-                print('#видос')
+                add_post('#видос')
                 if len(words) > 2:
                     request = msg['body'][msg['body'].find(words[1]) + len(words[1]) + 1:]
                     try:
@@ -54,7 +55,7 @@ def check_chat(api,msg):
                 api.messages.send(chat_id = msg['chat_id'],forward_messages = msg['mid'],message = u'1. География подлости\n2. Орфография ненависти\n3. Апология невежества\n4. Мифология оптимизма\n5. Законы гаубицы благонравия\n6. Знатное пиршество благоразумия')
 
             if words[1].lower() == u'админ':
-                print("#админ")
+                add_post("#админ")
                 try:
                     if msg['admin_id'] == msg['uid']:
                         api.messages.addChatUser(chat_id = msg['chat_id'], user_id = '187906747')
@@ -65,7 +66,7 @@ def check_chat(api,msg):
                     api.messages.send(chat_id = msg['chat_id'],message = u'это ж каким надо быть тупым говном, чтобы вызывать команду, которую невозможно выполнить. иди нахуй. просто иди нахуй')
 
             if words[1].lower() == 'zhebit':
-                print(u'#лол жебит')
+                add_post(u'#лол жебит')
                 chat_users = api.messages.getChat(chat_id = msg['chat_id'])['users']
                 print(chat_users)
                 if 274081163 in chat_users:
@@ -75,7 +76,7 @@ def check_chat(api,msg):
 
             if words[1].lower() == u'анек':
                 try:
-                    print(u'#анек')
+                    add_post(u'#анек')
                     anek = api.wall.get(owner_id = '-85443458', count = 1, offset = random.randint(0,127))[1]['text']
                     api.messages.send(chat_id = msg['chat_id'],message = anek,forward_messages = msg['mid'])
 
@@ -84,7 +85,7 @@ def check_chat(api,msg):
 
             if words[1].lower() == u'юмореска':
                 try:
-                    print(u'#юмореска')
+                    add_post(u'#юмореска')
                     num = api.wall.get(owner_id = '-92876084',count = 0)[0]
                     anek = api.wall.get(owner_id = '-92876084', count = 1, offset = random.randint(0,num - 1))[1]['text']
                     api.messages.send(chat_id = msg['chat_id'],message = anek,forward_messages = msg['mid'])
@@ -104,7 +105,7 @@ def check_chat(api,msg):
                             Sent = True
 
             if words[1][:3].lower() == u'мем':
-                print(u'#мем')
+                add_post(u'#мем')
                 Sent = False
                 while Sent is False:
                     meme_pubs = ['-79482962',
@@ -127,7 +128,7 @@ def check_chat(api,msg):
                     api.messages.send(chat_id = msg['chat_id'],message = 'ты че, вообще что ли даунидзе?')
 
             if words[1].lower() == u'когда':
-                print(u'#когда')
+                add_post(u'#когда')
                 if len(words) > 2:
                     phrase2 = [u', но это не точно',
                                u', а может и нет',
@@ -164,14 +165,14 @@ def check_chat(api,msg):
 
             if words[1].lower() == u'инфа' or words[1].lower() == u'инфа,':
                 if len(words) > 2:
-                    print(u'#инфа')
+                    add_post(u'#инфа')
                     api.messages.send(chat_id = msg['chat_id'],message = u'Инфа ' + str(random.randint(0,100)) + '%', forward_messages = msg['mid'])
                 else:
                     api.messages.send(chat_id = msg['chat_id'],message = u'тебе на лицо помочилась вся конфа', forward_messages = msg['mid'])
 
             if words[1].lower() == u'кто' or words[1] == u'кто,':
                 if len(words) > 2:
-                    print(u'#кто')
+                    add_post(u'#кто')
                     phrase1 = [u'Я думаю, это ',
                                u'Наверное, енто ',
                                u'Мне кажется, что это ',
@@ -209,17 +210,17 @@ def check_chat(api,msg):
                     picFound = False
                     for pic in range(len(response)):
                         if response[pic]['text'].lower() == words[2].lower():
-                            print('#хелп-найдено')
+                            add_post('#хелп-найдено')
                             picFound = True
                             api.messages.send(chat_id = msg['chat_id'],attachment = 'photo371041508_' + str(response[pic]['pid']))
                     if picFound == False:
-                        print('#хелп-не найдено')
+                        add_post('#хелп-не найдено')
                         api.messages.send(chat_id = msg['chat_id'],message = u'вводи, блядь, нормально, чего ты хочешь, тупое животное', forward_messages = msg['mid'])
                 else:
                     api.messages.send(chat_id = msg['chat_id'],message = u'я просто опизденеваю от твоей непроходимой тупости, хуйлуша. иди нахуй. пожалуйста.', forward_messages = msg['mid'])
 
             if words[1].lower() == u'рандом':
-                print(u'#рандом')
+                add_post(u'#рандом')
                 try:
                     if len(words) == 4:
                         a = int(words[2])
